@@ -1,4 +1,4 @@
-# Artist Showcase Platform 🎨
+# KalaSetu - Artist Showcase Platform 🎨
 
 A comprehensive platform for showcasing Indian folk art with ML-powered features including art style classification and style transfer. **Now powered by MongoDB for enhanced scalability and performance!**
 
