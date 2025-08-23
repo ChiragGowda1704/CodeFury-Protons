@@ -1,0 +1,23 @@
+# Art Classification Dataset Labels
+# Format: filename,category,description
+
+# Folk Art Samples
+sample_1.jpg,folk_art,Traditional folk art pattern
+sample_2.jpg,folk_art,Cultural folk design
+sample_3.jpg,folk_art,Regional folk artwork
+sample_4.jpg,folk_art,Ethnic art style
+sample_5.jpg,folk_art,Folk painting tradition
+
+# Modern Art Samples  
+sample_1.jpg,modern_art,Contemporary abstract art
+sample_2.jpg,modern_art,Modern artistic expression
+sample_3.jpg,modern_art,Digital art creation
+sample_4.jpg,modern_art,Contemporary style
+sample_5.jpg,modern_art,Modern artistic technique
+
+# Classical Art Samples
+sample_1.jpg,classical_art,Traditional classical painting
+sample_2.jpg,classical_art,Historical art style
+sample_3.jpg,classical_art,Renaissance influence
+sample_4.jpg,classical_art,Classical composition
+sample_5.jpg,classical_art,Academic art tradition

@@ -1,0 +1,17 @@
+fastapi==0.104.1
+uvicorn==0.24.0
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart
+Pillow
+python-dotenv
+numpy
+scikit-learn
+opencv-python
+requests
+
+# Optional heavy ML packages (commented out for Python 3.13 compatibility). If your env supports them, you can uncomment:
+# torch
+# torchvision
+# tensorflow
+# ultralytics
