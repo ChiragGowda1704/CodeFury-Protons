@@ -9,6 +9,9 @@ numpy
 scikit-learn
 opencv-python
 requests
+motor==3.3.2
+beanie==1.23.6
+pymongo==4.6.0
 
 # Optional heavy ML packages (commented out for Python 3.13 compatibility). If your env supports them, you can uncomment:
 # torch
