@@ -1,0 +1,45 @@
+{
+  "name": "artist-showcase-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.3.4",
+    "i18next": "^23.16.8",
+    "lucide-react": "^0.315.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-i18next": "^13.5.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.8.1",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^9.1.1",
+    "recharts": "^2.5.0",
+    "styled-components": "^5.3.9"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://localhost:8000"
+}

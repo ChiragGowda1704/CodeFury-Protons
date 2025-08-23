@@ -1,0 +1,279 @@
+// Main App component with routing and authentication
+
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Components
+import Navigation from './components/Navigation';
+import ApiTest from './components/ApiTest';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import Gallery from './pages/Gallery';
+import Upload from './pages/Upload';
+import GameDraw from './pages/GameDraw';
+import Cart from './pages/Cart';
+import Enhance from './pages/Enhance';
+import ExportCompliance from './pages/ExportCompliance';
+import Artists from './pages/Artists';
+import Profile from './pages/Profile';
+
+// Services
+import { authAPI } from './services/api';
+
+// Styled components
+import styled, { keyframes } from 'styled-components';
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const AppContainer = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Arial', sans-serif;
+  animation: ${fadeIn} 0.6s ease-out;
+`;
+
+const MainContent = styled.main`
+  padding-top: 80px; /* Account for fixed navbar */
+  min-height: calc(100vh - 80px);
+  animation: ${fadeIn} 0.8s ease-out 0.2s both;
+`;
+
+const LoadingScreen = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 1.5rem;
+  gap: 1rem;
+`;
+
+const LoadingSpinner = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+// Protected Route component
+const ProtectedRoute = ({ children, user }) => {
+  return user ? children : <Navigate to="/login" replace />;
+};
+
+// Public Route component (redirect if logged in)
+const PublicRoute = ({ children, user }) => {
+  return !user ? children : <Navigate to="/dashboard" replace />;
+};
+
+function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check authentication status on app load
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const userData = await authAPI.getCurrentUser();
+          setUser(userData);
+        }
+      } catch (error) {
+        // Token invalid or expired
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLogin = (userData, token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+  };
+
+  if (loading) {
+    return (
+      <LoadingScreen>
+        <LoadingSpinner />
+        Loading Artist Showcase Platform...
+      </LoadingScreen>
+    );
+  }
+
+  return (
+    <Router>
+      <AppContainer>
+        {user ? (
+          <Navigation user={user} onLogout={handleLogout}>
+            <Routes>
+              {/* Protected routes */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Dashboard user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/gallery" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Gallery user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/upload" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Upload user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/enhance" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Enhance user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/export-compliance" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <ExportCompliance />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/game" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <GameDraw user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/cart" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Cart user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/artists" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Artists user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute user={user}>
+                    <Profile user={user} />
+                  </ProtectedRoute>
+                } 
+              />
+
+              {/* Redirect root to dashboard */}
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Navigation>
+        ) : (
+          <MainContent>
+            <Routes>
+              {/* Public routes */}
+              <Route 
+                path="/login" 
+                element={
+                  <PublicRoute user={user}>
+                    <Login onLogin={handleLogin} />
+                  </PublicRoute>
+                } 
+              />
+              <Route 
+                path="/signup" 
+                element={
+                  <PublicRoute user={user}>
+                    <Signup onLogin={handleLogin} />
+                  </PublicRoute>
+                } 
+              />
+              <Route 
+                path="/api-test" 
+                element={<ApiTest />} 
+              />
+
+              {/* Redirect unauthenticated users to login */}
+              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </MainContent>
+        )}
+
+        {/* Toast notifications */}
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          style={{
+            zIndex: 9999,
+          }}
+          toastStyle={{
+            borderRadius: '12px',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.3)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+          }}
+        />
+      </AppContainer>
+    </Router>
+  );
+}
+
+export default App;

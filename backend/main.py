@@ -46,7 +46,13 @@ app = FastAPI(
 # CORS middleware - Allow frontend to connect
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],  # React dev server
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://localhost:3001", 
+        "http://localhost:3002",
+        "https://*.vercel.app",
+        "https://proton-frontend-xyz.vercel.app"  # Replace with your actual Vercel URL
+    ],  # React dev server and production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
